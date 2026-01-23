@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Digital Notice Board System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Student Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">👤 Student User</span>
+                <a href="../auth/login.html" class="btn btn-secondary btn-small">Logout</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Filter Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Notices</h2>
+                </div>
+                
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Filter by Category:</label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-category="all">All</button>
+                            <button class="filter-btn" data-category="exam">Exam</button>
+                            <button class="filter-btn" data-category="event">Event</button>
+                            <button class="filter-btn" data-category="emergency">Emergency</button>
+                            <button class="filter-btn" data-category="general">General</button>
+                            <button class="filter-btn" data-category="academic">Academic</button>
+                            <button class="filter-btn" data-category="placement">Placement</button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Search notices..." id="searchNotices">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Notices Grid Section -->
+            <section class="section">
+                <div class="notices-grid" id="noticesGrid">
+                    <!-- High Priority Notice -->
+                    <div class="notice-card priority-high" data-category="exam">
+                        <div class="notice-card-header">
+                            <span class="badge badge-exam">Exam</span>
+                            <span class="badge badge-high">High Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">Mid-Term Examination Schedule</h3>
+                        <p class="notice-card-description">
+                            Mid-term exams will be conducted from February 1-10, 2026. 
+                            All students are requested to check the detailed timetable on the notice board. 
+                            Admit cards will be issued from Jan 28, 2026.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 20, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Feb 10, 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- High Priority Emergency Notice -->
+                    <div class="notice-card priority-high" data-category="emergency">
+                        <div class="notice-card-header">
+                            <span class="badge badge-emergency">Emergency</span>
+                            <span class="badge badge-high">High Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">Emergency: Fire Drill Tomorrow</h3>
+                        <p class="notice-card-description">
+                            Mandatory fire drill scheduled for Jan 24, 2026 at 11:00 AM. 
+                            All students must evacuate buildings and gather at the designated assembly points. 
+                            This is a mandatory safety exercise.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 23, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Jan 24, 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Medium Priority Notice -->
+                    <div class="notice-card priority-medium" data-category="event">
+                        <div class="notice-card-header">
+                            <span class="badge badge-event">Event</span>
+                            <span class="badge badge-medium">Medium Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">Annual Tech Fest 2026</h3>
+                        <p class="notice-card-description">
+                            Registration is now open for the annual tech fest. Submit your project entries, 
+                            coding competition registrations, and hackathon team details by Jan 31, 2026. 
+                            Visit the student activities office for more information.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 18, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Jan 31, 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Medium Priority Academic Notice -->
+                    <div class="notice-card priority-medium" data-category="academic">
+                        <div class="notice-card-header">
+                            <span class="badge badge-academic">Academic</span>
+                            <span class="badge badge-medium">Medium Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">New Course Registration Open</h3>
+                        <p class="notice-card-description">
+                            Registration for elective courses for the next semester is now open. 
+                            Students can register through the online portal from Jan 25 to Jan 30, 2026. 
+                            Contact your academic advisor for guidance.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 21, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Jan 30, 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Low Priority Notice -->
+                    <div class="notice-card priority-low" data-category="general">
+                        <div class="notice-card-header">
+                            <span class="badge badge-general">General</span>
+                            <span class="badge badge-low">Low Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">Campus Maintenance Notice</h3>
+                        <p class="notice-card-description">
+                            WiFi services will be temporarily unavailable on Jan 25, 2026 from 2:00 PM to 4:00 PM 
+                            due to scheduled maintenance. We apologize for any inconvenience caused.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 22, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Jan 25, 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Low Priority Placement Notice -->
+                    <div class="notice-card priority-low" data-category="placement">
+                        <div class="notice-card-header">
+                            <span class="badge badge-placement">Placement</span>
+                            <span class="badge badge-low">Low Priority</span>
+                        </div>
+                        <h3 class="notice-card-title">Resume Writing Workshop</h3>
+                        <p class="notice-card-description">
+                            Join our resume writing and interview preparation workshop on Jan 28, 2026 at 3:00 PM 
+                            in the placement cell. Industry experts will guide you on creating impactful resumes.
+                        </p>
+                        <div class="notice-card-footer">
+                            <span class="notice-date">📅 Posted: Jan 19, 2026</span>
+                            <span class="notice-expiry">⏰ Expires: Jan 28, 2026</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>No Notices Found</h3>
+                    <p>There are no notices matching your current filter.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const noticeCards = document.querySelectorAll('.notice-card');
+        const emptyState = document.getElementById('emptyState');
+        const noticesGrid = document.getElementById('noticesGrid');
+        
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                filterNotices(category);
+            });
+        });
+        
+        function filterNotices(category) {
+            let visibleCount = 0;
+            
+            noticeCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide empty state
+            if (visibleCount === 0) {
+                noticesGrid.style.display = 'none';
+                emptyState.style.display = 'flex';
+            } else {
+                noticesGrid.style.display = 'grid';
+                emptyState.style.display = 'none';
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('searchNotices').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+            let visibleCount = 0;
+            
+            noticeCards.forEach(card => {
+                const title = card.querySelector('.notice-card-title').textContent.toLowerCase();
+                const description = card.querySelector('.notice-card-description').textContent.toLowerCase();
+                const category = card.dataset.category;
+                
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || category === activeCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide empty state
+            if (visibleCount === 0) {
+                noticesGrid.style.display = 'none';
+                emptyState.style.display = 'flex';
+            } else {
+                noticesGrid.style.display = 'grid';
+                emptyState.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

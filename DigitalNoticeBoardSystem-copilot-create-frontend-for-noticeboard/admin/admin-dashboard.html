@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Digital Notice Board System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Admin Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">👤 Admin User</span>
+                <a href="../auth/login.html" class="btn btn-secondary btn-small">Logout</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Add Notice Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Create New Notice</h2>
+                </div>
+                <div class="card">
+                    <form class="notice-form" id="noticeForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="noticeTitle">Notice Title *</label>
+                                <input type="text" id="noticeTitle" name="title" placeholder="Enter notice title" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="noticeDescription">Description *</label>
+                                <textarea id="noticeDescription" name="description" rows="4" placeholder="Enter notice description" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row form-row-3">
+                            <div class="form-group">
+                                <label for="noticeCategory">Category *</label>
+                                <select id="noticeCategory" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="exam">Exam</option>
+                                    <option value="event">Event</option>
+                                    <option value="emergency">Emergency</option>
+                                    <option value="general">General</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="placement">Placement</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="noticePriority">Priority *</label>
+                                <select id="noticePriority" name="priority" required>
+                                    <option value="">Select Priority</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="noticeExpiry">Expiry Date *</label>
+                                <input type="date" id="noticeExpiry" name="expiry" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Create Notice</button>
+                            <button type="reset" class="btn btn-secondary">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- Notices List Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Manage Notices</h2>
+                    <div class="section-actions">
+                        <input type="text" class="search-input" placeholder="Search notices..." id="searchNotices">
+                    </div>
+                </div>
+                
+                <div class="notices-table-container">
+                    <table class="notices-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Created</th>
+                                <th>Expires</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="noticesTableBody">
+                            <!-- Sample notices (will be replaced by backend data) -->
+                            <tr>
+                                <td>
+                                    <div class="notice-title-cell">
+                                        <strong>Mid-Term Examination Schedule</strong>
+                                        <p class="notice-desc">Mid-term exams will be conducted from Feb 1-10, 2026</p>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-exam">Exam</span></td>
+                                <td><span class="badge badge-high">High</span></td>
+                                <td>Jan 20, 2026</td>
+                                <td>Feb 10, 2026</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                                        <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="notice-title-cell">
+                                        <strong>Annual Tech Fest 2026</strong>
+                                        <p class="notice-desc">Registration open for annual tech fest. Submit your entries by Jan 31</p>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-event">Event</span></td>
+                                <td><span class="badge badge-medium">Medium</span></td>
+                                <td>Jan 18, 2026</td>
+                                <td>Jan 31, 2026</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                                        <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="notice-title-cell">
+                                        <strong>Campus Maintenance Notice</strong>
+                                        <p class="notice-desc">WiFi will be down for maintenance on Jan 25 from 2-4 PM</p>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-general">General</span></td>
+                                <td><span class="badge badge-low">Low</span></td>
+                                <td>Jan 22, 2026</td>
+                                <td>Jan 25, 2026</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                                        <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        // Set minimum date to today for expiry date picker
+        document.getElementById('noticeExpiry').min = new Date().toISOString().split('T')[0];
+        
+        // Handle form submission (no backend yet)
+        document.getElementById('noticeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Notice created successfully! (Backend not implemented yet)');
+            this.reset();
+        });
+        
+        // Handle edit buttons
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Edit functionality will be implemented with backend');
+            });
+        });
+        
+        // Handle delete buttons
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this notice?')) {
+                    alert('Notice deleted! (Backend not implemented yet)');
+                }
+            });
+        });
+        
+        // Handle search
+        document.getElementById('searchNotices').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#noticesTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -240,14 +240,19 @@ After running `sample_data.sql`, you'll have:
 ## 🔐 Security Considerations
 
 ### Password Storage
-- Passwords are stored as SHA-256 hashes
+- **⚠️ IMPORTANT:** SHA-256 hashes used in sample data are FOR TESTING ONLY
 - **Never store plain text passwords**
-- In production, use stronger hashing algorithms (bcrypt, Argon2)
-- Implement salt for additional security
+- **Production Requirement:** Use proper password hashing algorithms:
+  - bcrypt (recommended)
+  - scrypt
+  - Argon2
+- These algorithms are specifically designed for password storage with built-in salting
+- SHA-256/SHA-512 are NOT secure for passwords (too fast, no salt)
+- Implement individual salts per password
 
 ### Recommended Security Enhancements
-1. **Use prepared statements** to prevent SQL injection
-2. **Implement password complexity requirements**
+1. **Use parameterized queries/bind variables** to prevent SQL injection (NEVER concatenate user input into SQL)
+2. **Implement password complexity requirements** (minimum length, special characters)
 3. **Add account lockout** after failed login attempts
 4. **Enable audit logging** for sensitive operations
 5. **Regularly backup** the database
@@ -294,12 +299,17 @@ END;
 
 ### Authenticate user
 ```sql
+-- SECURE APPROACH: Use bind variables to prevent SQL injection
 SELECT u.user_id, u.username, u.full_name, r.role_name
 FROM users u
 JOIN roles r ON u.role_id = r.role_id
-WHERE u.username = 'admin'
-  AND u.password_hash = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
+WHERE u.username = :username
+  AND u.password_hash = :password_hash
   AND u.is_active = 1;
+
+-- Example with actual values (for development/testing only):
+-- Replace :username with 'admin'
+-- Replace :password_hash with '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 ```
 
 ### Get notice statistics

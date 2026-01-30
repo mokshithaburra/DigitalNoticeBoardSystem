@@ -61,17 +61,25 @@ COMMIT;
 -- INSERT USERS
 -- ============================================================================
 
+-- ⚠️ WARNING: SHA-256 hashing is used here FOR TESTING/DEVELOPMENT ONLY
+-- ⚠️ In production, use proper password hashing algorithms:
+--    - bcrypt (recommended)
+--    - scrypt
+--    - Argon2
+-- SHA-256 is NOT secure for passwords (too fast, no built-in salt)
+-- These test passwords must be replaced before any production use!
+
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Inserting users...');
 END;
 /
 
--- Admin users (password: admin123 - in production, use proper hashing)
+-- Admin users (password: admin123 - FOR TESTING ONLY, NEVER USE IN PRODUCTION)
 INSERT INTO users (user_id, username, password_hash, full_name, email, role_id, is_active)
 VALUES (
     user_seq.NEXTVAL, 
     'admin', 
-    '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- SHA-256 hash of 'admin123'
+    '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- SHA-256 of 'admin123' - TESTING ONLY
     'System Administrator',
     'admin@noticeboard.edu',
     (SELECT role_id FROM roles WHERE role_name = 'Admin'),
@@ -82,19 +90,19 @@ INSERT INTO users (user_id, username, password_hash, full_name, email, role_id, 
 VALUES (
     user_seq.NEXTVAL,
     'john.admin',
-    '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
+    '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- SHA-256 of 'admin123' - TESTING ONLY
     'John Smith',
     'john.smith@noticeboard.edu',
     (SELECT role_id FROM roles WHERE role_name = 'Admin'),
     1
 );
 
--- Student users (password: student123)
+-- Student users (password: student123 - FOR TESTING ONLY, NEVER USE IN PRODUCTION)
 INSERT INTO users (user_id, username, password_hash, full_name, email, role_id, is_active)
 VALUES (
     user_seq.NEXTVAL,
     'student',
-    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8', -- SHA-256 hash of 'student123'
+    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8', -- SHA-256 of 'student123' - TESTING ONLY
     'Test Student',
     'student@noticeboard.edu',
     (SELECT role_id FROM roles WHERE role_name = 'Student'),
@@ -105,7 +113,7 @@ INSERT INTO users (user_id, username, password_hash, full_name, email, role_id, 
 VALUES (
     user_seq.NEXTVAL,
     'alice.jones',
-    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8',
+    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8', -- SHA-256 of 'student123' - TESTING ONLY
     'Alice Jones',
     'alice.jones@student.edu',
     (SELECT role_id FROM roles WHERE role_name = 'Student'),
@@ -116,7 +124,7 @@ INSERT INTO users (user_id, username, password_hash, full_name, email, role_id, 
 VALUES (
     user_seq.NEXTVAL,
     'bob.williams',
-    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8',
+    '1c142b2d01aa34e9a36bde480645a57fd69e14155dacfab5a3f9257b77fdc8d8', -- SHA-256 of 'student123' - TESTING ONLY
     'Bob Williams',
     'bob.williams@student.edu',
     (SELECT role_id FROM roles WHERE role_name = 'Student'),

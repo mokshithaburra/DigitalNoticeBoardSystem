@@ -34,12 +34,17 @@ SELECT COUNT(*) FROM notices WHERE status = 'Active';
 
 ### Login as Admin
 ```sql
+-- SECURE: Use bind variables in production code
 SELECT u.user_id, u.username, r.role_name
 FROM users u
 JOIN roles r ON u.role_id = r.role_id
-WHERE u.username = 'admin'
-  AND u.password_hash = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
+WHERE u.username = :username
+  AND u.password_hash = :password_hash
   AND u.is_active = 1;
+
+-- For testing only (replace bind variables):
+-- :username = 'admin'
+-- :password_hash = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 ```
 
 ### Get Active Notices

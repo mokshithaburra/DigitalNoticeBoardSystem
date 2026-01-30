@@ -12,8 +12,15 @@ A modern, responsive web-based notice board system for educational institutions,
 - Responsive design for all screen sizes
 - Consistent styling with priority-based color coding
 
+✅ **Database Schema Complete**
+- Oracle SQL database schema with 4 tables
+- Sequences, indexes, and constraints
+- Triggers for automation
+- Views for common queries
+- Stored procedures for CRUD operations
+- Sample data for testing
+
 ❌ **Backend NOT Started Yet**
-❌ **Database NOT Implemented Yet**
 ❌ **Authentication Logic NOT Implemented Yet**
 
 ## 🎯 Features
@@ -51,6 +58,12 @@ digital-notice-board/
 ├── css/
 │   └── style.css          # Global stylesheet
 │
+├── database/              # Database schema and scripts
+│   ├── schema.sql        # Oracle SQL schema
+│   ├── sample_data.sql   # Sample test data
+│   ├── ER_DIAGRAM.md     # Entity-Relationship diagram
+│   └── README.md         # Database documentation
+│
 └── assets/
     └── images/            # Image assets (empty for now)
 ```
@@ -75,6 +88,33 @@ digital-notice-board/
    - Click "Get Started" on the landing page
    - Select a role (Admin/Student) and click Login (credentials not required yet)
    - Explore the respective dashboard
+
+### Setting Up the Database
+
+1. Install Oracle Database (11g or higher)
+
+2. Connect to your database using SQL*Plus or Oracle SQL Developer
+
+3. Run the schema creation script:
+   ```sql
+   @database/schema.sql
+   ```
+
+4. Load sample data (optional, for testing):
+   ```sql
+   @database/sample_data.sql
+   ```
+
+5. Verify installation:
+   ```sql
+   SELECT table_name FROM user_tables;
+   ```
+
+**Sample Credentials:**
+- Admin: username=`admin`, password=`admin123`
+- Student: username=`student`, password=`student123`
+
+For detailed database documentation, see [database/README.md](database/README.md)
 
 ## 🎨 Design Features
 
@@ -130,8 +170,13 @@ digital-notice-board/
 - Python
 - Flask framework
 
-### Database (Planned)
-- SQLite
+### Database (Implemented)
+- Oracle SQL
+- Complete schema with 4 tables
+- Stored procedures and functions
+- Triggers for automation
+- Views for common queries
+- See [database/README.md](database/README.md) for details
 
 ### Future Enhancements
 - Email notifications (SMTP)
@@ -195,11 +240,11 @@ This project is for educational purposes.
 
 - [x] Phase 1: Frontend UI Design
 - [ ] Phase 2: Backend Setup (Flask)
-- [ ] Phase 3: Database Integration (SQLite)
+- [x] Phase 3: Database Schema (Oracle SQL)
 - [ ] Phase 4: Authentication & Authorization
 - [ ] Phase 5: Email Notifications
 - [ ] Phase 6: Deployment
 
 ---
 
-**Note**: This is currently a frontend-only implementation. Backend functionality will be added in subsequent development phases.
+**Note**: Frontend UI and database schema are complete. Backend integration and authentication logic will be added in subsequent development phases.

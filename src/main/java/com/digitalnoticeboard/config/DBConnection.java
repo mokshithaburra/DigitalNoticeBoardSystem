@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/digital_notice_board?useSSL=false&serverTimezone=UTC";
+    private static final String DEFAULT_URL = "jdbc:oracle:thin:@localhost:1521/FREEPDB1";
     private static final String URL = envOrDefault("DB_URL", DEFAULT_URL);
-    private static final String USER = envOrDefault("DB_USER", "root");
+    private static final String USER = envOrDefault("DB_USER", "system");
     private static final String PASSWORD = envOrDefault("DB_PASSWORD", "");
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException exception) {
-            throw new RuntimeException("MySQL JDBC Driver not found", exception);
+            throw new RuntimeException("Oracle JDBC Driver not found", exception);
         }
     }
 

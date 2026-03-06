@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Digital Notice Board System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Student Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">👤 Student User</span>
+                <a href="../logout" class="btn btn-secondary btn-small">Logout</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Filter Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Notices</h2>
+                </div>
+                
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Filter by Category:</label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-category="all">All</button>
+                            <button class="filter-btn" data-category="exam">Exam</button>
+                            <button class="filter-btn" data-category="event">Event</button>
+                            <button class="filter-btn" data-category="emergency">Emergency</button>
+                            <button class="filter-btn" data-category="general">General</button>
+                            <button class="filter-btn" data-category="academic">Academic</button>
+                            <button class="filter-btn" data-category="placement">Placement</button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Search notices..." id="searchNotices">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Notices Grid Section -->
+            <section class="section">
+                <div class="notices-grid" id="noticesGrid">
+                    <!-- Notices from backend are rendered here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>No Notices Found</h3>
+                    <p>There are no notices matching your current filter.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/student.js"></script>
+</body>
+</html>

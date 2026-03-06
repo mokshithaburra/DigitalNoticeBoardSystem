@@ -1,0 +1,26 @@
+# Maven / Java build output
+/target/
+
+# Java compiled bytecode and packaged archives
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+*.iml
+
+# VS Code local settings
+.vscode/
+
+# Environment files
+.env
+.env.*

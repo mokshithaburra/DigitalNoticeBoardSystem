@@ -62,13 +62,13 @@ Defined in `pom.xml`:
 
 Set these for database connectivity:
 
-- `DB_URL` (example: `jdbc:oracle:thin:@localhost:1521/FREEPDB1`)
+- `DB_URL` (example: `jdbc:oracle:thin:@localhost:1521:XE`)
 - `DB_USER` (example: `DNB_APP` or `SYSTEM`)
 - `DB_PASSWORD` (example: your Oracle password)
 
 If not provided, app falls back to:
 
-- URL: `jdbc:oracle:thin:@localhost:1521/FREEPDB1`
+- URL: `jdbc:oracle:thin:@localhost:1521:XE`
 - User: `system`
 - Password: empty string
 
@@ -152,5 +152,37 @@ The app works end-to-end, but these are recommended for production:
 ## 8) Oracle Notices (Important)
 
 - Oracle JDBC Thin driver (`ojdbc11`) does **not** require Oracle Instant Client.
-- Ensure listener/service is reachable (default examples: port `1521`, service `FREEPDB1`/`XEPDB1`).
+- Ensure listener/SID is reachable (default example: port `1521`, SID `XE`).
 - If your Oracle setup uses a different service name, update `DB_URL` accordingly.
+
+## 9) Login Troubleshooting (Oracle + Tomcat)
+
+If login always shows `Invalid credentials`, check these in order:
+
+1. **Tomcat process env vars**
+  - Setting `$env:DB_*` in one PowerShell does not always reach an already running Tomcat process.
+  - On Windows, create `TOMCAT_HOME/bin/setenv.bat` with:
+
+```bat
+set DB_URL=jdbc:oracle:thin:@localhost:1521:XE
+set DB_USER=SYSTEM
+set DB_PASSWORD=your_password
+set DB_SCHEMA=SYSTEM
+```
+
+  - Restart Tomcat after adding/updating `setenv.bat`.
+
+2. **Schema mismatch**
+  - If tables are in `DNB_APP` but app connects as `SYSTEM`, set:
+  - `DB_SCHEMA=DNB_APP`
+
+3. **SID mismatch**
+  - Ensure SID is exactly `XE`.
+
+4. **Verify users data exists**
+
+```sql
+SELECT username, role FROM users;
+```
+
+  - Expected roles: `admin` and `student`.

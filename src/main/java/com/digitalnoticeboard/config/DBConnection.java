@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String DEFAULT_URL = "jdbc:oracle:thin:@localhost:1521/FREEPDB1";
-    private static final String URL = envOrDefault("DB_URL", DEFAULT_URL);
-    private static final String USER = envOrDefault("DB_USER", "system");
-    private static final String PASSWORD = envOrDefault("DB_PASSWORD", "");
+    private static final String DEFAULT_URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    private static final String URL = configOrDefault("DB_URL", DEFAULT_URL);
+    private static final String USER = configOrDefault("DB_USER", "system");
+    private static final String PASSWORD = configOrDefault("DB_PASSWORD", "manager");
 
     static {
         try {
@@ -25,8 +25,11 @@ public class DBConnection {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    private static String envOrDefault(String key, String fallback) {
+    private static String configOrDefault(String key, String fallback) {
         String value = System.getenv(key);
+        if (value == null || value.trim().isEmpty()) {
+            value = System.getProperty(key);
+        }
         if (value == null || value.trim().isEmpty()) {
             return fallback;
         }

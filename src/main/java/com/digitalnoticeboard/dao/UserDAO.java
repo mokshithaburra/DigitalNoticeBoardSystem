@@ -11,7 +11,18 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public User authenticateUser(String username, String password, String role) {
-        String sql = "SELECT user_id, username, password, role, email FROM users WHERE username = ? AND password = ? AND role = ?";
+        String schema = System.getenv("DB_SCHEMA");
+        if (schema == null || schema.trim().isEmpty()) {
+            schema = System.getProperty("DB_SCHEMA");
+        }
+
+        String tableName = "users";
+        if (schema != null && !schema.trim().isEmpty()) {
+            tableName = schema.trim() + ".users";
+        }
+
+        String sql = "SELECT user_id, username, password, role, email FROM " + tableName +
+            " WHERE LOWER(TRIM(username)) = LOWER(TRIM(?)) AND password = ? AND LOWER(TRIM(role)) = LOWER(TRIM(?))";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -32,7 +43,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            throw new RuntimeException("Authentication query failed. Check DB_URL/DB_USER/DB_SCHEMA and users table access.", exception);
         }
 
         return null;

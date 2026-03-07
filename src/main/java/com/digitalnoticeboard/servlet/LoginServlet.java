@@ -50,7 +50,14 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        User user = userDAO.authenticateUser(username.trim(), password.trim(), role.trim());
+        User user;
+        try {
+            user = userDAO.authenticateUser(username.trim(), password.trim(), role.trim());
+        } catch (RuntimeException runtimeException) {
+            response.sendRedirect(request.getContextPath() + "/auth/login.html?error=Database%20connection%20or%20schema%20configuration%20issue");
+            return;
+        }
+
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/auth/login.html?error=Invalid%20credentials");
             return;

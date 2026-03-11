@@ -1,177 +1,254 @@
 # Digital Notice Board System
 
-Java web application (Servlet + JSP + HTML/CSS/JS) for admin/student notice management.
+A Java web application for managing and displaying notices with role-based access control for administrators and students. Built with Java Servlets, JSP, HTML/CSS/JavaScript, and Oracle Database.
 
-## 0)Project Structure
+---
 
-```text
-.
-├─ pom.xml
-├─ src/
-│  └─ main/
-│     ├─ java/com/digitalnoticeboard/
-│     │  ├─ config/
-│     │  ├─ dao/
-│     │  ├─ model/
-│     │  └─ servlet/
-│     └─ webapp/
-│        ├─ index.html
-│        ├─ admin/
-│        ├─ auth/
-│        ├─ student/
-│        ├─ css/
-│        ├─ js/
-│        └─ WEB-INF/web.xml
-└─ target/   (generated, ignored in git)
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Database Setup](#database-setup)
+  - [Environment Variables](#environment-variables)
+  - [Build and Deploy](#build-and-deploy)
+- [Usage](#usage)
+  - [Admin](#admin)
+  - [Student](#student)
+  - [API Endpoints](#api-endpoints)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+---
+
+## Features
+
+- **Role-Based Access Control** — Separate dashboards and permissions for admin and student users.
+- **Notice CRUD** — Admins can create, read, update, and delete notices.
+- **Categories** — Notices organized by Exam, Event, Emergency, General, Academic, and Placement.
+- **Priority Levels** — High, Medium, and Low priority for notice sorting.
+- **Expiry Dates** — Notices automatically expire on a set date.
+- **Search and Filter** — Search notices by title or description; filter by category.
+- **Auto-Refresh** — Student dashboard refreshes notices every 10 seconds.
+- **Session Management** — 30-minute session timeout with secure login/logout.
+- **Password Security** — BCrypt hashing with automatic upgrade from plaintext passwords.
+- **Responsive UI** — Works across desktop and mobile browsers.
+
+---
+
+## Tech Stack
+
+| Layer      | Technology                                  |
+|------------|---------------------------------------------|
+| Language   | Java 21 (LTS)                               |
+| Build      | Apache Maven 3.9+                           |
+| Server     | Apache Tomcat 9.0+ (Servlet 4.0)            |
+| Database   | Oracle Database (21c XE or 23ai Free)       |
+| Frontend   | HTML5, CSS3, vanilla JavaScript              |
+| Security   | BCrypt (`jbcrypt 0.4`), session-based auth   |
+
+**Maven Dependencies** (defined in `pom.xml`):
+
+- `javax.servlet:javax.servlet-api:4.0.1` (provided)
+- `com.oracle.database.jdbc:ojdbc11:23.4.0.24.05`
+- `org.mindrot:jbcrypt:0.4`
+
+---
+
+## Project Structure
+
+```
+DigitalNoticeBoardSystem/
+├── pom.xml
+├── src/main/
+│   ├── java/com/digitalnoticeboard/
+│   │   ├── config/          # Database connection management
+│   │   ├── dao/             # Data access (UserDAO, NoticeDAO)
+│   │   ├── model/           # Entity classes (User, Notice)
+│   │   └── servlet/         # Servlets and REST API endpoints
+│   └── webapp/
+│       ├── index.html       # Landing page
+│       ├── auth/            # Login page
+│       ├── admin/           # Admin dashboard
+│       ├── student/         # Student dashboard
+│       ├── css/             # Stylesheets
+│       ├── js/              # Client-side JavaScript
+│       └── WEB-INF/web.xml  # Servlet and session configuration
+└── target/                  # Build output (git-ignored)
 ```
 
-## 1) Tech-Stack
+---
 
-Install these first:
+## Installation
 
-1. **JDK 21** (LTS)  
-	- Required by `pom.xml` compiler settings.
-2. **Apache Maven 3.9+**  
-	- For dependency resolution, build, and packaging.
-3. **Apache Tomcat 9.0+**  
-	- Servlet 4.0 runtime (`javax.servlet-api:4.0.1`).
-4. **Oracle Database (recommended: Oracle Database 23ai Free or 21c XE)**  
-  - Backend persistence for users and notices.
-5. **Git** (optional but recommended)
-	- Version control and reproducible setup.
-6. **VS Code** (optional but recommended)
-	- Development/editor workflow.
+### Prerequisites
 
-## 2) Java/Maven Dependencies
+1. **JDK 21** (LTS) — Required by the Maven compiler configuration.
+2. **Apache Maven 3.9+** — For dependency resolution, building, and packaging.
+3. **Apache Tomcat 9.0+** — Servlet 4.0 runtime.
+4. **Oracle Database** — Recommended: Oracle 23ai Free or 21c XE.
+5. **Git** (optional) — For cloning the repository.
 
-Defined in `pom.xml`:
+### Database Setup
 
-- `javax.servlet:javax.servlet-api:4.0.1` (scope `provided`)
-- `com.oracle.database.jdbc:ojdbc11:23.4.0.24.05`
-
-## 3) Runtime Requirements
-
-Set these for database connectivity:
-
-- `DB_URL` (example: `jdbc:oracle:thin:@localhost:1521:XE`)
-- `DB_USER` (example: `DNB_APP` or `SYSTEM`)
-- `DB_PASSWORD` (example: your Oracle password)
-
-If not provided, app falls back to:
-
-- URL: `jdbc:oracle:thin:@localhost:1521:XE`
-- User: `system`
-- Password: empty string
-
-## 4) Database Setup
-
-Create schema/tables (Oracle):
+Connect to Oracle as a privileged user and create the application schema:
 
 ```sql
--- Run as SYSTEM (or another privileged account)
 CREATE USER DNB_APP IDENTIFIED BY dnb_app_password;
 GRANT CONNECT, RESOURCE TO DNB_APP;
+```
 
--- connect as DNB_APP and run:
+Connect as `DNB_APP` and create the tables:
 
+```sql
 CREATE TABLE users (
-  user_id NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY,
+  user_id  NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY,
   username VARCHAR2(100) NOT NULL UNIQUE,
   password VARCHAR2(255) NOT NULL,
-  role VARCHAR2(20) NOT NULL,
-  email VARCHAR2(255)
+  role     VARCHAR2(20)  NOT NULL,
+  email    VARCHAR2(255)
 );
 
 CREATE TABLE notices (
-  notice_id NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY,
-  title VARCHAR2(255) NOT NULL,
-  description CLOB NOT NULL,
-  category VARCHAR2(100) NOT NULL,
-  priority NUMBER(1) NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT SYSTIMESTAMP,
-  expiry_date DATE NULL,
-  created_by NUMBER NOT NULL,
-  CONSTRAINT fk_notices_user
-	 FOREIGN KEY (created_by) REFERENCES users(user_id)
+  notice_id   NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY,
+  title       VARCHAR2(255)  NOT NULL,
+  description CLOB           NOT NULL,
+  category    VARCHAR2(100)  NOT NULL,
+  priority    NUMBER(1)      NOT NULL,
+  created_at  TIMESTAMP      NOT NULL DEFAULT SYSTIMESTAMP,
+  expiry_date DATE           NULL,
+  created_by  NUMBER         NOT NULL,
+  CONSTRAINT fk_notices_user FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
 ```
 
 Seed example users:
 
 ```sql
-INSERT INTO users (username, password, role, email)
-VALUES
-('admin1', 'admin123', 'admin', 'admin1@example.com'),
-('student1', 'student123', 'student', 'student1@example.com');
+INSERT INTO users (username, password, role, email) VALUES
+  ('admin1',   'admin123',   'admin',   'admin1@example.com');
+INSERT INTO users (username, password, role, email) VALUES
+  ('student1', 'student123', 'student', 'student1@example.com');
 ```
 
-## 5) Build and Run
+### Environment Variables
 
-From project root:
+Set these before starting Tomcat for database connectivity:
+
+| Variable      | Example Value                            | Description                |
+|---------------|------------------------------------------|----------------------------|
+| `DB_URL`      | `jdbc:oracle:thin:@localhost:1521:XE`    | JDBC connection URL        |
+| `DB_USER`     | `DNB_APP` or `SYSTEM`                    | Oracle database user       |
+| `DB_PASSWORD` | *(your Oracle password)*                 | Oracle database password   |
+| `DB_SCHEMA`   | `DNB_APP` *(optional)*                   | Schema if different from user |
+
+**Linux/macOS:**
 
 ```bash
-mvn clean package
+export DB_URL=jdbc:oracle:thin:@localhost:1521:XE
+export DB_USER=SYSTEM
+export DB_PASSWORD=your_password
 ```
 
-Deploy generated WAR:
-
-- `target/digital-notice-board.war` -> Tomcat `webapps/`
-
-Open in browser:
-
-- `http://localhost:8080/digital-notice-board/`
-
-## 6) Frontend-Backend Integration Status
-
-Current integration points:
-
-- Login form posts to `/login` and redirects by role.
-- Admin dashboard (`/admin/admin-dashboard.html`) uses `/api/admin/notices` for create/update/delete/list.
-- Student dashboard (`/student/student-dashboard.html`) uses `/api/notices` for notice feed.
-- Both dashboards now render **only backend data** (no static placeholder cards/rows).
-
-## 7) Known Security Improvements to Consider Next
-
-The app works end-to-end, but these are recommended for production:
-
-- Store hashed passwords instead of plaintext.
-- Move DB secrets to a secrets manager or container/runtime config.
-- Add CSRF protection for state-changing endpoints.
-
-## 8) Oracle Notices (Important)
-
-- Oracle JDBC Thin driver (`ojdbc11`) does **not** require Oracle Instant Client.
-- Ensure listener/SID is reachable (default example: port `1521`, SID `XE`).
-- If your Oracle setup uses a different service name, update `DB_URL` accordingly.
-
-## 9) Login Troubleshooting (Oracle + Tomcat)
-
-If login always shows `Invalid credentials`, check these in order:
-
-1. **Tomcat process env vars**
-  - Setting `$env:DB_*` in one PowerShell does not always reach an already running Tomcat process.
-  - On Windows, create `TOMCAT_HOME/bin/setenv.bat` with:
+**Windows (Tomcat `bin/setenv.bat`):**
 
 ```bat
 set DB_URL=jdbc:oracle:thin:@localhost:1521:XE
 set DB_USER=SYSTEM
 set DB_PASSWORD=your_password
-set DB_SCHEMA=SYSTEM
 ```
 
-  - Restart Tomcat after adding/updating `setenv.bat`.
+> If no environment variables are set, the application falls back to `localhost:1521:XE` with user `system` and an empty password.
 
-2. **Schema mismatch**
-  - If tables are in `DNB_APP` but app connects as `SYSTEM`, set:
-  - `DB_SCHEMA=DNB_APP`
+### Build and Deploy
 
-3. **SID mismatch**
-  - Ensure SID is exactly `XE`.
+```bash
+# Clone the repository
+git clone https://github.com/mokshithaburra/DigitalNoticeBoardSystem.git
+cd DigitalNoticeBoardSystem
 
-4. **Verify users data exists**
+# Build the WAR file
+mvn clean package
 
-```sql
-SELECT username, role FROM users;
+# Copy the WAR to Tomcat
+cp target/digital-notice-board.war $CATALINA_HOME/webapps/
+
+# Start Tomcat and open in browser
+# http://localhost:8080/digital-notice-board/
 ```
 
-  - Expected roles: `admin` and `student`.
+---
+
+## Usage
+
+### Admin
+
+1. Navigate to `http://localhost:8080/digital-notice-board/` and click **Get Started**.
+2. Log in with role **Admin** (default: `admin1` / `admin123`).
+3. **Create notices** — Fill in title, description, category, priority, and expiry date.
+4. **Manage notices** — Edit or delete existing notices from the dashboard table.
+5. **Search** — Use the search bar to filter notices by title or description.
+
+### Student
+
+1. Log in with role **Student** (default: `student1` / `student123`).
+2. **View notices** — Active notices are displayed as cards sorted by priority.
+3. **Filter** — Select a category to filter notices (Exam, Event, Emergency, General, Academic, Placement).
+4. **Search** — Search across notice titles and descriptions.
+5. Notices **auto-refresh** every 10 seconds.
+
+### API Endpoints
+
+| Method | Endpoint              | Description                              |
+|--------|-----------------------|------------------------------------------|
+| POST   | `/login`              | Authenticate user (username, password, role) |
+| GET    | `/logout`             | End session                              |
+| GET    | `/api/admin/notices`  | List active and expired notices (admin)  |
+| POST   | `/api/admin/notices`  | Create, update, or delete notice (admin) |
+| GET    | `/api/notices`        | List active notices sorted by priority (student) |
+
+---
+
+## Troubleshooting
+
+**Login returns "Invalid credentials":**
+
+1. **Environment variables not reaching Tomcat** — On Windows, add variables to `TOMCAT_HOME/bin/setenv.bat` and restart Tomcat.
+2. **Schema mismatch** — If tables are in `DNB_APP` but the app connects as `SYSTEM`, set `DB_SCHEMA=DNB_APP`.
+3. **SID mismatch** — Verify the Oracle SID is `XE` (or update `DB_URL` to match your setup).
+4. **Missing seed data** — Run `SELECT username, role FROM users;` to confirm the user records exist.
+
+**Oracle connectivity:**
+
+- The Oracle JDBC Thin driver (`ojdbc11`) does **not** require Oracle Instant Client.
+- Ensure the Oracle listener is running and reachable on port `1521`.
+
+---
+
+## Contributing
+
+Contributions are welcome. To contribute:
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m "Add your feature"`).
+4. Push to your branch (`git push origin feature/your-feature`).
+5. Open a Pull Request describing your changes.
+
+Please ensure your code follows the existing project structure and conventions.
+
+---
+
+## License
+
+This project does not currently include a license file. All rights are reserved by the repository owner. Contact the maintainer for usage permissions.
+
+---
+
+## Contact
+
+For questions, bug reports, or feature requests, please open an issue on the [GitHub Issues](https://github.com/mokshithaburra/DigitalNoticeBoardSystem/issues) page.

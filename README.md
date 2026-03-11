@@ -2,6 +2,60 @@
 
 Java web application (Servlet + JSP + HTML/CSS/JS) for admin/student notice management.
 
+## Tech Stack
+
+### Backend
+| Technology | Version | Purpose |
+|---|---|---|
+| Java | 21 (LTS) | Core programming language |
+| Java Servlets | 4.0.1 (`javax.servlet-api`) | HTTP request handling and routing |
+| JSP (JavaServer Pages) | — | Server-side HTML templating |
+| Apache Tomcat | 9.0+ | Servlet container / application server |
+| Apache Maven | 3.9+ | Build automation and dependency management |
+| Oracle Database | 21c XE / 23ai Free | Relational database for persistence |
+| Oracle JDBC Thin Driver | 23.4.0.24.05 (`ojdbc11`) | Database connectivity |
+| jBCrypt | 0.4 | Password hashing (bcrypt) |
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| HTML5 | Page structure and semantic markup |
+| CSS3 | Custom styling (1050+ lines), responsive design, CSS variables |
+| Vanilla JavaScript (ES6+) | Client-side interactivity, Fetch API, DOM manipulation |
+| Google Fonts (Poppins) | Typography |
+
+### Architecture & Patterns
+| Pattern | Details |
+|---|---|
+| MVC (Model-View-Controller) | Models → Java POJOs, Views → JSP/HTML, Controllers → Servlets |
+| DAO (Data Access Object) | `UserDAO`, `NoticeDAO` — abstracts all database operations |
+| REST-style JSON APIs | `/api/notices`, `/api/admin/notices` — JSON over HTTP |
+| Session-based Authentication | `HttpSession` with role-based access control (admin / student) |
+| WAR Packaging | Deployed as `digital-notice-board.war` on Tomcat |
+
+### Project Statistics
+| Metric | Value |
+|---|---|
+| Java source files | 13 (8 servlets, 2 DAOs, 2 models, 1 config) |
+| Frontend files | 9 (4 HTML, 4 JS, 1 CSS) |
+| JSP templates | 4 |
+| Total lines of code | ~3450 (Java 1240 · CSS 1058 · JS 523 · JSP 335 · HTML 289) |
+| REST API endpoints | 8+ (CRUD for notices, auth, role-based feeds) |
+| Database tables | 2 (`users`, `notices`) |
+| Notice categories | 6 (Exam, Event, Emergency, General, Academic, Placement) |
+| Priority levels | 3 (High, Medium, Low) |
+
+## Resume-Ready Project Description
+
+> **Digital Notice Board System** — Full-stack Java web application built with **Java 21, Servlets 4.0, JSP, Oracle Database, and a vanilla JavaScript frontend** that digitizes institutional notice management for administrators and students.
+>
+> - Engineered an **MVC-architecture** web app (~3450 LOC across 26 source files) using **Java Servlets, JSP, HTML5/CSS3/JavaScript**, and **Oracle Database**, deployed as a WAR on **Apache Tomcat 9**.
+> - Designed and implemented **8+ RESTful API endpoints** with **JSON serialization** for real-time CRUD operations on notices, supporting **6 categories** and **3 priority levels** with automatic expiry tracking.
+> - Built a **role-based access control** system with **session-based authentication** and **BCrypt password hashing** (with automatic plaintext-to-hash migration on login), securing admin and student workflows.
+> - Developed a **responsive, mobile-first frontend** (1050+ lines of CSS) featuring real-time search, category filtering, and **auto-refreshing notice feeds** (10-second polling) for the student dashboard.
+> - Implemented the **DAO pattern** with **Oracle JDBC Thin Driver** for all database operations across 2 normalized tables (`users`, `notices`), with schema-qualified queries and environment-variable-driven configuration.
+> - Delivered **dual admin/student dashboards**: admin dashboard supports full notice lifecycle management (create, edit, delete, view active/expired); student dashboard provides a filterable, searchable, priority-sorted notice feed.
+
 ## 0) Canonical Project Structure (Use This Only)
 
 ```text

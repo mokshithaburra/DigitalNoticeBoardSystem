@@ -20,8 +20,6 @@ A Java web application for managing and displaying notices with role-based acces
   - [API Endpoints](#api-endpoints)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ---
 

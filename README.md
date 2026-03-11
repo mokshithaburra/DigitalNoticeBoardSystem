@@ -238,15 +238,3 @@ Contributions are welcome. To contribute:
 5. Open a Pull Request describing your changes.
 
 Please ensure your code follows the existing project structure and conventions.
-
----
-
-## License
-
-This project does not currently include a license file. All rights are reserved by the repository owner. Contact the maintainer for usage permissions.
-
----
-
-## Contact
-
-For questions, bug reports, or feature requests, please open an issue on the [GitHub Issues](https://github.com/mokshithaburra/DigitalNoticeBoardSystem/issues) page.
